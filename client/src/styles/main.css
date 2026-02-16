@@ -1,4 +1,4 @@
-body {
+/* body {
   font-family: Arial;
   margin: 0;
   background: #f4f6f9;
@@ -51,4 +51,12 @@ body {
 
 .loader {
   text-align: center;
+}  */
+
+/* ONLY GLOBAL RESET – NOTHING ELSE */
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #FFFEF9;
 }

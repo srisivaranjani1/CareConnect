@@ -1,15 +1,25 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import Chatbot from "./pages/ChatBot";
 import Awareness from "./pages/Awareness";
 import About from "./pages/About";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
+        {/* Default: redirect to signup */}
+        <Route path="/" element={<Navigate to="/signup" />} />
+
+        {/* Auth Routes */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+
+        {/* Main App Routes */}
+        <Route path="/home" element={<Home />} />
         <Route path="/chat" element={<Chatbot />} />
         <Route path="/awareness" element={<Awareness />} />
         <Route path="/about" element={<About />} />
@@ -19,4 +29,3 @@ function App() {
 }
 
 export default App;
-
