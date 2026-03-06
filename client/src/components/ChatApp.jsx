@@ -9,21 +9,48 @@ function ChatApp() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const handleSend = () => {
-    if (!input.trim()) return;
+  // const handleSend = () => {
+  //   if (!input.trim()) return;
 
-    setMessages((prev) => [
-      ...prev,
-      { role: "user", text: input },
-      {
-        role: "assistant",
-        text:
-          "Thanks for your query. I’m here to help with healthcare-related questions.",
-      },
-    ]);
+  //   setMessages((prev) => [
+  //     ...prev,
+  //     { role: "user", text: input },
+  //     {
+  //       role: "assistant",
+  //       text:
+  //         "Thanks for your query. I’m here to help with healthcare-related questions.",
+  //     },
+  //   ]);
 
-    setInput("");
-  };
+  //   setInput("");
+  // };
+
+  const handleSend = async () => {
+  if (!input.trim()) return;
+
+  const userMessage = { role: "user", text: input };
+
+  setMessages(prev => [...prev, userMessage]);
+
+ const response = await fetch("http://localhost:5001/predict", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    symptoms: [input]
+  })
+});
+
+  const data = await response.json();
+
+  setMessages(prev => [
+    ...prev,
+    { role: "assistant", text: data.message }
+  ]);
+
+  setInput("");
+};
 
   return (
     <div
