@@ -40,7 +40,10 @@ coverage/
 # ML files (ignore large files)
 # =====================
 ml-service/*.csv
-
+ml-service/*.pkl
+ml-service/dataset/
+ml-service/model/
 
 # optional
+*.pkl
 *.csv
