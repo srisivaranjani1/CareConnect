@@ -46,6 +46,15 @@ function Home() {
                 Start Chat
               </button>
             </Link>
+              <Link to="/diet">
+              <button
+                className="btn btn-dark rounded-pill px-4 py-2"
+                style={{ fontSize: "15px" }}
+              >
+                Diet Plans
+              </button>
+            </Link>
+           
           </div>
 
           {/* RIGHT ILLUSTRATION */}

@@ -6,6 +6,7 @@ import Awareness from "./pages/Awareness";
 import About from "./pages/About";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import DietPlan from "./pages/DietPlan";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/chat" element={<Chatbot />} />
         <Route path="/awareness" element={<Awareness />} />
         <Route path="/about" element={<About />} />
+        <Route path="/diet" element={<DietPlan />} />
       </Routes>
     </BrowserRouter>
   );

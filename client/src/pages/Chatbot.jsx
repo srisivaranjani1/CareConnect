@@ -29,6 +29,7 @@
 
 import ChatApp from "../components/ChatApp";
 
+
 function Chatbot() {
   return <ChatApp />;
 }

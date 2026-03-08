@@ -9,60 +9,70 @@ function ChatApp() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // const handleSend = () => {
-  //   if (!input.trim()) return;
-
-  //   setMessages((prev) => [
-  //     ...prev,
-  //     { role: "user", text: input },
-  //     {
-  //       role: "assistant",
-  //       text:
-  //         "Thanks for your query. I’m here to help with healthcare-related questions.",
-  //     },
-  //   ]);
-
-  //   setInput("");
-  // };
-
   const handleSend = async () => {
-  if (!input.trim()) return;
+    if (!input.trim()) return;
 
-  const userMessage = { role: "user", text: input };
+    const userMessage = { role: "user", text: input };
 
-  setMessages(prev => [...prev, userMessage]);
+    setMessages(prev => [...prev, userMessage]);
 
- const response = await fetch("http://localhost:5001/predict", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({
-    symptoms: [input]
-  })
-});
+    try {
+      const response = await fetch("http://localhost:5001/predict", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          symptoms: [input]
+        })
+      });
 
-  const data = await response.json();
+      const data = await response.json();
 
-  setMessages(prev => [
-    ...prev,
-    { role: "assistant", text: data.message }
-  ]);
+      // Save predicted disease
+      if (data.disease) {
+        localStorage.setItem("predictedDisease", data.disease);
+      }
 
-  setInput("");
-};
+      setMessages(prev => [
+        ...prev,
+        { role: "assistant", text: data.message }
+      ]);
+
+    } catch (error) {
+      setMessages(prev => [
+        ...prev,
+        { role: "assistant", text: "Server error. Please try again." }
+      ]);
+    }
+
+    setInput("");
+  };
+
+  const goToDietPage = () => {
+    const disease = localStorage.getItem("predictedDisease");
+
+    if (!disease) {
+      alert("Please ask about symptoms first to predict a disease.");
+      return;
+    }
+
+    window.location.href = "/diet";
+  };
 
   return (
     <div
       className="vh-100 d-flex flex-column"
       style={{ backgroundColor: "#FFFEF9" }}
     >
+
       {/* CHAT WINDOW */}
       <div className="flex-grow-1 overflow-auto px-4 py-5">
         <div
           className="mx-auto d-flex flex-column gap-3"
           style={{ maxWidth: "720px" }}
         >
+
           {messages.length === 0 ? (
             <div className="text-center mt-5">
               <div
@@ -101,6 +111,7 @@ function ChatApp() {
                       msg.role === "user" ? "#FFFFFF" : "#1F2937",
                     fontSize: "14px",
                     lineHeight: "1.5",
+                    whiteSpace: "pre-line"
                   }}
                 >
                   {msg.text}
@@ -108,7 +119,9 @@ function ChatApp() {
               </div>
             ))
           )}
+
           <div ref={messagesEndRef} />
+
         </div>
       </div>
 
@@ -121,6 +134,7 @@ function ChatApp() {
           className="mx-auto d-flex align-items-center gap-2"
           style={{ maxWidth: "720px" }}
         >
+
           <input
             type="text"
             className="form-control rounded-pill px-4"
@@ -130,14 +144,26 @@ function ChatApp() {
             onKeyDown={(e) => e.key === "Enter" && handleSend()}
             style={{ border: "1px solid #E5E7EB" }}
           />
+
+          {/* Send Button */}
           <button
             className="btn btn-dark rounded-pill px-4"
             onClick={handleSend}
           >
             Send
           </button>
+
+          {/* Diet Plan Button */}
+          <button
+            className="btn btn-dark rounded-pill px-4"
+            onClick={goToDietPage}
+          >
+            DietPlan
+          </button>
+
         </div>
       </div>
+
     </div>
   );
 }
