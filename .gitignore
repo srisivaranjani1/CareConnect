@@ -36,4 +36,11 @@ Thumbs.db
 # Optional
 # =====================
 coverage/
- 
+ # =====================
+# ML files (ignore large files)
+# =====================
+ml-service/*.csv
+
+
+# optional
+*.csv
